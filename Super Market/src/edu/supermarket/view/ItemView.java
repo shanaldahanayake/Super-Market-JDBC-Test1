@@ -14,13 +14,13 @@ import java.util.logging.Logger;
  */
 public class ItemView extends javax.swing.JFrame {
     
-    private ItemController itemcontroller;
+    private ItemController itemController;
     /**
      * Creates new form ItemView
      */
     public ItemView() throws Exception{
         initComponents();
-        itemcontroller=new ItemController();
+        itemController=new ItemController();
     }
 
     /**
@@ -216,10 +216,10 @@ public class ItemView extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     private void saveItem(){
-        ItemDto dto=new ItemDto(txtCode.getText(), txtDescription.getText(), txtPackSize.getText(), Double.parseDouble(txtPackSize.getText()), Integer.parseInt(txtQOH.getText()));
+        ItemDto dto=new ItemDto(txtCode.getText(), txtDescription.getText(), txtPackSize.getText(), Double.parseDouble(txtUnitPrice.getText()), Integer.parseInt(txtQOH.getText()));
         String resp;
         try {
-            resp = itemcontroller.saveItem(dto);
+            resp = itemController.saveItem(dto);
             System.out.println(resp);
         } catch (Exception ex) {
             Logger.getLogger(ItemView.class.getName()).log(Level.SEVERE, null, ex);
