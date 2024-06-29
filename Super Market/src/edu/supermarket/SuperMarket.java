@@ -4,6 +4,8 @@
  */
 package edu.supermarket;
 
+import edu.supermarket.view.ItemView;
+
 /**
  *
  * @author Dahanayake
@@ -15,6 +17,6 @@ public class SuperMarket {
      */
     public static void main(String[] args) {
         // TODO code application logic here
+       new ItemView().setVisible(true);          
     }
-    
 }
