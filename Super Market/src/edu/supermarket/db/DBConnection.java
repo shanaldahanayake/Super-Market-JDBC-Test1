@@ -19,12 +19,14 @@ public class DBConnection {
         Class.forName("com.mysql.cj.jdbc.Driver");
         connection=DriverManager.getConnection("jdbc:mysql://localhost:3306/thogakade", "root", "50s12l10D49@");
     } 
+    
     public static DBConnection getInstance() throws ClassNotFoundException,SQLException{
         if(dBConnection==null){
             dBConnection=new DBConnection();
         }
         return dBConnection;
     }
+    
     public Connection getConnection(){
         return connection;
     }

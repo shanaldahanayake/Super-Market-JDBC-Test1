@@ -9,6 +9,8 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import edu.supermarket.dto.ItemDto;
 import java.sql.PreparedStatement;
+import java.util.ArrayList;
+import java.sql.ResultSet;
 /**
  *
  * @author Dahanayake
@@ -33,5 +35,18 @@ public class ItemModel {
         
         return statement.executeUpdate()>0?"Success":"Fail";
         
+    }
+    public ArrayList<ItemDto> getAllItem() throws Exception{
+        String sql="SELECT * FROM item";
+        PreparedStatement statment = connection.prepareStatement(sql);
+        ResultSet rst=statment.executeQuery();
+        
+        ArrayList<ItemDto> itemDtos=new ArrayList<>();
+        
+        while (rst.next()) {            
+            ItemDto dto=new ItemDto(rst.getString("ItemCode"),rst.getString("Description"),rst.getString("PackSize"),rst.getDouble("UnitPrice"),rst.getInt("QtyOnHand"));
+            itemDtos.add(dto);
+        }
+        return itemDtos;
     }
 }

@@ -6,6 +6,7 @@ package edu.supermarket.controller;
 
 import edu.supermarket.dto.ItemDto;
 import edu.supermarket.model.ItemModel;
+import java.util.ArrayList;
 
 /**
  *
@@ -20,5 +21,9 @@ public class ItemController {
     public String saveItem(ItemDto itemDto) throws Exception{
         String resp=itemModel.saveItem(itemDto);
         return resp;
+    }
+    public ArrayList<ItemDto> getAllItem() throws Exception{
+        ArrayList<ItemDto> itemDtos=itemModel.getAllItem();
+        return itemDtos;
     }
 }
