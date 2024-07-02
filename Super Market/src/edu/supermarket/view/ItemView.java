@@ -182,7 +182,7 @@ public class ItemView extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        // TODO add your handling code here:
+        deleteItem();
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
@@ -309,6 +309,18 @@ public class ItemView extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error at loading Item");
+        }
+    }
+
+    private void deleteItem(){
+        try {
+            String itemCode=txtCode.getText();
+            String resp=itemController.deleteItem(itemCode);
+            JOptionPane.showMessageDialog(this, resp);
+            clearForm();
+            loadTable();
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error at deleting item");
         }
     }
 
