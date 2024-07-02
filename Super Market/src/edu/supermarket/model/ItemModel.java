@@ -49,4 +49,18 @@ public class ItemModel {
         }
         return itemDtos;
     }
+    
+    public ItemDto getItem(String itemCode)throws Exception{
+        String sql="SELECT *FROM item WHERE ItemCode=?";
+        PreparedStatement statment = connection.prepareStatement(sql);
+        statment.setString(1, itemCode);
+        ResultSet rst=statment.executeQuery();
+        
+        while(rst.next()){
+            ItemDto dto=new ItemDto(rst.getString("ItemCode"),rst.getString("Description"),rst.getString("PackSize"),rst.getDouble("UnitPrice"),rst.getInt("QtyOnHand"));
+            
+            return dto;
+        }
+        return null;   
+    }
 }
