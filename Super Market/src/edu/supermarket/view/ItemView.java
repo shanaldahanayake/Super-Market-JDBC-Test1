@@ -247,6 +247,7 @@ public class ItemView extends javax.swing.JFrame {
             resp = itemController.saveItem(dto);
             JOptionPane.showMessageDialog(this,resp);
             clearForm();
+            loadTable();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error at save data");
             clearForm();
