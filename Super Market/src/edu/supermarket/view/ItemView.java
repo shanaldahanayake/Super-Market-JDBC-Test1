@@ -77,6 +77,11 @@ public class ItemView extends javax.swing.JFrame {
         });
 
         btnUpdate.setText("Update");
+        btnUpdate.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUpdateActionPerformed(evt);
+            }
+        });
 
         btnSave.setText("Save");
         btnSave.addActionListener(new java.awt.event.ActionListener() {
@@ -186,12 +191,16 @@ public class ItemView extends javax.swing.JFrame {
     }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-            saveItem();
+        saveItem();
     }//GEN-LAST:event_btnSaveActionPerformed
 
     private void tblItemMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblItemMouseClicked
         searchItem();
     }//GEN-LAST:event_tblItemMouseClicked
+
+    private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
+        updateItem();
+    }//GEN-LAST:event_btnUpdateActionPerformed
 
     /**
      * @param args the command line arguments
@@ -321,6 +330,20 @@ public class ItemView extends javax.swing.JFrame {
             loadTable();
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error at deleting item");
+        }
+    }
+
+    private void updateItem() {
+       try {
+            ItemDto dto=new ItemDto(txtCode.getText(), txtDescription.getText(), txtPackSize.getText(), Double.parseDouble(txtUnitPrice.getText()), Integer.parseInt(txtQOH.getText()));
+            String resp = itemController.updateItem(dto);
+            JOptionPane.showMessageDialog(this,resp);
+            loadTable();
+            clearForm();
+            
+        } catch (Exception ex) {
+            JOptionPane.showMessageDialog(this, "Error at update data");
+            clearForm();
         }
     }
 

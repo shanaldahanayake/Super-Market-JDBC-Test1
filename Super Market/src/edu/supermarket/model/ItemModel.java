@@ -71,4 +71,18 @@ public class ItemModel {
         return statement.executeUpdate()>0?"Success":"Fail";
 
     }
+
+    public String updateItem(ItemDto dto) throws Exception{
+        String sql="UPDATE ITEM SET Description=?,PackSize=?,UnitPrice=?,QtyOnHand=? WHERE ItemCode=?";
+        PreparedStatement statement=connection.prepareStatement(sql);
+        
+       
+        statement.setString(1, dto.getDescription());
+        statement.setString(2, dto.getPackSize());
+        statement.setDouble(3, dto.getUnitPrice());
+        statement.setInt(4, dto.getQoh());
+         statement.setString(5, dto.getCode());
+        
+        return statement.executeUpdate()>0?"Success":"Fail";
+    }
 }

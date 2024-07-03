@@ -36,5 +36,11 @@ public class ItemController {
 
     public String deleteItem(String itemCode) throws Exception {
         String resp=itemModel.deleteItem(itemCode);
-        return resp;    }
+        return resp;    
+    }
+
+    public String updateItem(ItemDto dto) throws Exception{
+        String resp=itemModel.updateItem(dto);
+        return resp ;
+    }
 }
