@@ -4,6 +4,7 @@
  */
 package edu.supermarket;
 
+import edu.supermarket.view.CustomerView;
 import edu.supermarket.view.ItemView;
 
 /**
@@ -17,6 +18,6 @@ public class SuperMarket {
      */
     public static void main(String[] args) throws Exception {
         // TODO code application logic here
-       new ItemView().setVisible(true);          
+       new CustomerView().setVisible(true);          
     }
 }
