@@ -4,11 +4,21 @@
  */
 package edu.supermarket.view;
 
+import edu.supermarket.controller.CustomerController;
 import edu.supermarket.controller.ItemController;
+import edu.supermarket.controller.OrderController;
+import edu.supermarket.dto.CustomerDto;
 import edu.supermarket.dto.ItemDto;
+import edu.supermarket.dto.OrderDetailDto;
+import edu.supermarket.dto.OrderDto;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -16,12 +26,19 @@ import javax.swing.JOptionPane;
  */
 public class OrderView extends javax.swing.JFrame {
     private ItemController itemController;
+    private CustomerController customerController;
+    private ArrayList<OrderDetailDto> orderDetailDtos;
+    private OrderController orderController;
     /**
      * Creates new form OrderView
      */
     public OrderView() throws Exception{
         initComponents();
         itemController=new ItemController();
+        customerController=new CustomerController();
+        orderDetailDtos=new ArrayList<>();
+        orderController=new OrderController();
+        loadTable();
     }
 
     /**
@@ -41,7 +58,7 @@ public class OrderView extends javax.swing.JFrame {
         lblOredrId = new javax.swing.JLabel();
         txtOredrId = new javax.swing.JTextField();
         lblOredrId1 = new javax.swing.JLabel();
-        txtOredrId1 = new javax.swing.JTextField();
+        txtCustomerID = new javax.swing.JTextField();
         btnSearchCus = new javax.swing.JButton();
         lblCustomerDetails = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
@@ -55,7 +72,7 @@ public class OrderView extends javax.swing.JFrame {
         txtQuantity = new javax.swing.JTextField();
         btnAdd = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
-        jTable3 = new javax.swing.JTable();
+        tblOrderDetail = new javax.swing.JTable();
         btnPlaceOrder = new javax.swing.JButton();
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
@@ -98,6 +115,11 @@ public class OrderView extends javax.swing.JFrame {
         lblOredrId1.setText("Customer ID");
 
         btnSearchCus.setText("Search");
+        btnSearchCus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSearchCusActionPerformed(evt);
+            }
+        });
 
         lblCustomerDetails.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
 
@@ -120,8 +142,13 @@ public class OrderView extends javax.swing.JFrame {
         lblOredrId4.setText("Quantity");
 
         btnAdd.setText("Add");
+        btnAdd.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAddActionPerformed(evt);
+            }
+        });
 
-        jTable3.setModel(new javax.swing.table.DefaultTableModel(
+        tblOrderDetail.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null},
                 {null, null, null, null},
@@ -132,10 +159,15 @@ public class OrderView extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
-        jScrollPane3.setViewportView(jTable3);
+        jScrollPane3.setViewportView(tblOrderDetail);
 
         btnPlaceOrder.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         btnPlaceOrder.setText("Place Order");
+        btnPlaceOrder.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPlaceOrderActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -159,7 +191,7 @@ public class OrderView extends javax.swing.JFrame {
                                 .addComponent(txtOredrId, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap())
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(txtOredrId1, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(txtCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                                 .addComponent(btnSearchCus)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -202,7 +234,7 @@ public class OrderView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblOredrId1)
-                    .addComponent(txtOredrId1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtCustomerID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnSearchCus)
                     .addComponent(lblCustomerDetails))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -233,6 +265,18 @@ public class OrderView extends javax.swing.JFrame {
     private void btnSearchItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchItemActionPerformed
         searchItem();// TODO add your handling code here:
     }//GEN-LAST:event_btnSearchItemActionPerformed
+
+    private void btnSearchCusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSearchCusActionPerformed
+        searchCustomer();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnSearchCusActionPerformed
+
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+        addToTable();// TODO add your handling code here:
+    }//GEN-LAST:event_btnAddActionPerformed
+
+    private void btnPlaceOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPlaceOrderActionPerformed
+        placeOrder();        // TODO add your handling code here:
+    }//GEN-LAST:event_btnPlaceOrderActionPerformed
 
     /**
      * @param args the command line arguments
@@ -284,7 +328,6 @@ public class OrderView extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator1;
     private javax.swing.JTable jTable1;
     private javax.swing.JTable jTable2;
-    private javax.swing.JTable jTable3;
     private javax.swing.JLabel lblCustomerDetails;
     private javax.swing.JLabel lblItemData;
     private javax.swing.JLabel lblOredrId;
@@ -293,12 +336,14 @@ public class OrderView extends javax.swing.JFrame {
     private javax.swing.JLabel lblOredrId3;
     private javax.swing.JLabel lblOredrId4;
     private javax.swing.JLabel lblTitle;
+    private javax.swing.JTable tblOrderDetail;
+    private javax.swing.JTextField txtCustomerID;
     private javax.swing.JTextField txtDiscount;
     private javax.swing.JTextField txtItemId;
     private javax.swing.JTextField txtOredrId;
-    private javax.swing.JTextField txtOredrId1;
     private javax.swing.JTextField txtQuantity;
     // End of variables declaration//GEN-END:variables
+    
     private void searchItem(){
         try {
             String itemId=txtItemId.getText();
@@ -310,6 +355,66 @@ public class OrderView extends javax.swing.JFrame {
             }
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error at Loading Item");
+        }
+    }
+    private void searchCustomer(){
+        try {
+            String customerId=txtCustomerID.getText();
+            CustomerDto customerDto=customerController.searchCustomer(customerId);
+            
+            if(customerDto!=null){
+                lblCustomerDetails.setText(customerDto.getCustId()+"|"+customerDto.getCustName()+"|"+customerDto.getAddress()+"|"+customerDto.getdOB());
+            }else{
+                lblCustomerDetails.setText("Customer Not Found");
+            }
+                
+        } catch (Exception e) {
+            
+            JOptionPane.showMessageDialog(this, "Error at Loading Customer");
+
+        }
+        
+    }
+    private void loadTable(){
+        String columns[]={"Item Code","Quantity","Discount"};
+        DefaultTableModel dtm=new DefaultTableModel(columns,0){
+            
+            public boolean isCellEditable(int row,int column){
+                return false;
+            }
+        };
+        tblOrderDetail.setModel(dtm);    
+    }
+    private void addToTable(){
+        OrderDetailDto orderDetailDto=new OrderDetailDto(null,txtItemId.getText(),Integer.parseInt(txtQuantity.getText()),Integer.parseInt(txtDiscount.getText()));
+        orderDetailDtos.add(orderDetailDto);
+        
+        Object[] rowData={orderDetailDto.getItemCode(),orderDetailDto.getQty(),orderDetailDto.getDiscount()};
+        DefaultTableModel dtm=(DefaultTableModel)tblOrderDetail.getModel();
+        
+        dtm.addRow(rowData);
+        cleanItem();
+    }
+    private void cleanItem(){
+        txtItemId.setText("");
+        txtDiscount.setText("");
+        txtQuantity.setText("");
+        lblItemData.setText("");     
+    }
+    private void placeOrder(){
+        try {
+            OrderDto orderDto=new OrderDto();
+            orderDto.setOrderId(txtOredrId.getText());
+            orderDto.setCustID(txtCustomerID.getText());
+            
+            SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
+            String date=sdf.format(new Date());
+            orderDto.setDate(date);
+            
+            String resp=orderController.placeOrder(orderDto, orderDetailDtos);
+            JOptionPane.showMessageDialog(this, resp);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error at Place Order");
         }
     }
 }
